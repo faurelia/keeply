@@ -1,0 +1,23 @@
+{
+  "name": "@keeply/api",
+  "type": "module",
+  "scripts": {
+    "build": "vercel build",
+    "deploy": "vercel deploy"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.23",
+    "@neondatabase/serverless": "^1.2.1",
+    "better-auth": "^1.7.23",
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.16",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "dotenv": "^18.0.10",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
+}
