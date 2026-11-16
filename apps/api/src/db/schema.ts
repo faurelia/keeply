@@ -4,6 +4,7 @@ import {
   uuid,
   varchar,
   text,
+  boolean,
   timestamp,
   index,
 } from "drizzle-orm/pg-core";
@@ -27,6 +28,8 @@ export const favoriteLinks = pgTable(
     title: varchar("title", { length: 255 }).notNull(),
     url: text("url").notNull(),
     description: text("description"),
+    isFavorite: boolean("is_favorite").default(false).notNull(),
+    isArchived: boolean("is_archived").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()

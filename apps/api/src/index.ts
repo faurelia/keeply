@@ -4,11 +4,14 @@ import { auth } from "./auth.js";
 import links from "./routes/links.js";
 
 const app = new Hono();
+const webAppOrigin = process.env.WEB_APP_URL
+  ? new URL(process.env.WEB_APP_URL).origin
+  : undefined;
 
 app.use(
   "/api/*",
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174", ...(webAppOrigin ? [webAppOrigin] : [])],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,

@@ -8,6 +8,20 @@
       "when": 1794739835781,
       "tag": "0000_careful_naoko",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794807161170,
+      "tag": "0001_persist_link_favorite",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794809852968,
+      "tag": "0002_add_link_archive_flag",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,9 @@
 appId: com.electron.app
 productName: '@keeply/desktop'
+protocols:
+  - name: Keeply Authentication
+    schemes:
+      - com.keeply.desktop
 directories:
   buildResources: build
 files:

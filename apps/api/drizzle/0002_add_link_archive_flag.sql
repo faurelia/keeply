@@ -1,0 +1,1 @@
+ALTER TABLE "favorite_links" ADD COLUMN "is_archived" boolean DEFAULT false NOT NULL;

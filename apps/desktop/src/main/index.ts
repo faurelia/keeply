@@ -1,7 +1,80 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { apiURL, authClient } from './auth'
+import { addLinkSchema } from '../renderer/src/lib/schemas/link'
+import { z } from 'zod'
+
+const updateLinkSchema = addLinkSchema.partial().extend({ isArchived: z.boolean().optional() })
+
+authClient.setupMain()
+
+function assertTrustedRenderer(event: IpcMainInvokeEvent): void {
+  const frame = event.senderFrame
+  if (!frame || frame !== event.sender.mainFrame) {
+    throw new Error('Link requests must come from the main application window.')
+  }
+
+  const frameURL = new URL(frame.url)
+  if (is.dev) {
+    const rendererURL = process.env['ELECTRON_RENDERER_URL']
+    if (!rendererURL || frameURL.origin !== new URL(rendererURL).origin) {
+      throw new Error('Untrusted renderer origin.')
+    }
+  } else if (frameURL.protocol !== 'file:') {
+    throw new Error('Untrusted renderer origin.')
+  }
+}
+
+async function requestLinksAPI(
+  event: IpcMainInvokeEvent,
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
+  path = '',
+  body?: unknown
+) {
+  assertTrustedRenderer(event)
+  const cookie = authClient.getCookie()
+  if (!cookie) throw new Error('Your session has expired. Please sign in again.')
+
+  const response = await fetch(new URL(`/api/links${path}`, apiURL), {
+    method,
+    headers: {
+      cookie,
+      ...(body ? { 'content-type': 'application/json' } : {})
+    },
+    ...(body ? { body: JSON.stringify(body) } : {})
+  })
+  const result: unknown = await response.json().catch(() => null)
+  if (!response.ok) {
+    const message =
+      result && typeof result === 'object' && 'error' in result && typeof result.error === 'string'
+        ? result.error
+        : `Could not ${method === 'GET' ? 'load' : method === 'DELETE' ? 'remove' : 'save'} link (${response.status}).`
+    throw new Error(message)
+  }
+  return result
+}
+
+ipcMain.handle('keeply:links:list', (event) => requestLinksAPI(event, 'GET'))
+ipcMain.handle('keeply:links:create', (event, input: unknown) => {
+  const parsed = addLinkSchema.safeParse(input)
+  if (!parsed.success) throw new Error(parsed.error.issues[0]?.message || 'Invalid link details.')
+  return requestLinksAPI(event, 'POST', '', parsed.data)
+})
+ipcMain.handle('keeply:links:update', (event, id: unknown, input: unknown) => {
+  const parsedId = z.uuid().safeParse(id)
+  if (!parsedId.success) throw new Error('Invalid link ID.')
+  const parsedInput = updateLinkSchema.safeParse(input)
+  if (!parsedInput.success) throw new Error(parsedInput.error.issues[0]?.message || 'Invalid link details.')
+  if (Object.keys(parsedInput.data).length === 0) throw new Error('No link changes were provided.')
+  return requestLinksAPI(event, 'PATCH', `/${parsedId.data}`, parsedInput.data)
+})
+ipcMain.handle('keeply:links:delete', (event, id: unknown) => {
+  const parsedId = z.uuid().safeParse(id)
+  if (!parsedId.success) throw new Error('Invalid link ID.')
+  return requestLinksAPI(event, 'DELETE', `/${parsedId.data}`)
+})
 
 function createWindow(): void {
   // Create the browser window.
@@ -13,6 +86,8 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
       sandbox: false
     }
   })
@@ -48,9 +123,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
 

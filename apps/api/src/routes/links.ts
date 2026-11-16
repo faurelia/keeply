@@ -21,6 +21,8 @@ const createLinkSchema = z.object({
       return protocol === "http:" || protocol === "https:";
     }, "URL must use HTTP or HTTPS"),
   description: z.string().trim().max(2000).nullable().optional(),
+  isFavorite: z.boolean().optional(),
+  isArchived: z.boolean().optional(),
 });
 
 const updateLinkSchema = createLinkSchema

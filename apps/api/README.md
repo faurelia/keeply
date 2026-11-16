@@ -9,6 +9,13 @@ npm install
 vc dev
 ```
 
+Before using the links API with an existing database, apply pending schema migrations from this
+directory:
+
+```
+pnpm db:migrate
+```
+
 ```
 open http://localhost:3000
 ```

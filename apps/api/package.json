@@ -2,11 +2,14 @@
   "name": "@keeply/api",
   "type": "module",
   "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "build": "vercel build",
     "deploy": "vercel deploy"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.23",
+    "@better-auth/electron": "^1.7.23",
     "@neondatabase/serverless": "^1.2.1",
     "better-auth": "^1.7.23",
     "drizzle-orm": "^0.45.4",

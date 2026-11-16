@@ -5,7 +5,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   main: {},
-  preload: {},
+  preload: {
+    build: {
+      externalizeDeps: {
+        exclude: ['@better-auth/electron']
+      }
+    }
+  },
   renderer: {
     resolve: {
       alias: {
