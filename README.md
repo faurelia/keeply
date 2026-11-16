@@ -50,4 +50,4 @@ The web app and API can be deployed independently. Set their production environm
 
 ## License
 
-No license has been selected yet. All rights are reserved unless a license is added to this repository.
+Keeply is licensed under the [MIT License](LICENSE).
