@@ -2,8 +2,9 @@ import { Pool } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-serverless";
 
 import * as schema from "./schema.js";
+import { env } from "../env.js";
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = env.DATABASE_URL;
 
 if (!connectionString) {
   throw new Error("DATABASE_URL is not defined");

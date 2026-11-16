@@ -10,6 +10,8 @@ const updateLinkSchema = addLinkSchema.partial().extend({ isArchived: z.boolean(
 
 authClient.setupMain()
 
+app.setName('Keeply')
+
 function assertTrustedRenderer(event: IpcMainInvokeEvent): void {
   const frame = event.senderFrame
   if (!frame || frame !== event.sender.mainFrame) {
@@ -79,6 +81,7 @@ ipcMain.handle('keeply:links:delete', (event, id: unknown) => {
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: 'Keeply',
     width: 900,
     height: 670,
     show: false,
@@ -115,7 +118,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.keeply.desktop')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

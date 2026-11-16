@@ -4,7 +4,6 @@
   "scripts": {
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "build": "vercel build",
     "deploy": "vercel deploy"
   },
   "dependencies": {

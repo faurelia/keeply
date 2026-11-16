@@ -2,10 +2,11 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { auth } from "./auth.js";
 import links from "./routes/links.js";
+import { env } from "./env.js";
 
 const app = new Hono();
-const webAppOrigin = process.env.WEB_APP_URL
-  ? new URL(process.env.WEB_APP_URL).origin
+const webAppOrigin = env.WEB_APP_URL
+  ? new URL(env.WEB_APP_URL).origin
   : undefined;
 
 app.use(

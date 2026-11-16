@@ -1,45 +1,26 @@
-# @keeply/desktop
+# Keeply Desktop
 
-An Electron application with React and TypeScript
+The desktop client is an Electron app built with React and TypeScript. It uses the Keeply API for account authentication and link storage, and opens a browser for Google sign-in.
 
-## Recommended IDE Setup
+## Development
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-## Project Setup
-
-### Install
+Install the repository dependencies and configure `apps/desktop/.env.local` from `.env.example`:
 
 ```bash
-$ pnpm install
+pnpm install
+cd apps/desktop && pnpm dev
 ```
 
-### Development
+Set `VITE_API_URL` to the API origin and `VITE_WEB_URL` to the web app origin. Development defaults to local services; packaged builds default to the Keeply Vercel web origin (`https://keeply-web-khaki.vercel.app`), which proxies API requests. For local development, run the API with `vc dev` from `apps/api` and the web app with `pnpm dev` from `apps/web` first. The Google OAuth client must allow the auth server callback URL, usually `<auth-base-url>/api/auth/callback/google`.
+
+## Package installers
+
+Run the build on the platform you want to package:
 
 ```bash
-$ pnpm dev
+pnpm build:win
+pnpm build:mac
+pnpm build:linux
 ```
 
-### Browser sign-in configuration
-
-Copy `.env.example` to `.env.local` and set `VITE_API_URL` to the Keeply API URL and
-`VITE_WEB_URL` to the web app URL. The web app also needs `VITE_API_URL` set to that API URL.
-Set `WEB_APP_URL` on the API to the web app's public origin so CORS and Better Auth trust it.
-The Google OAuth client must allow the Better Auth callback at
-`<BETTER_AUTH_URL>/api/auth/callback/google`.
-
-For local development, run the API on port 3000 and the web app on port 5174 before starting
-the desktop app.
-
-### Build
-
-```bash
-# For windows
-$ pnpm build:win
-
-# For macOS
-$ pnpm build:mac
-
-# For Linux
-$ pnpm build:linux
-```
+Output files are created in `dist/`. Set production API and web origins with `VITE_API_URL` and `VITE_WEB_URL` if deploying to different domains. macOS distribution also requires the appropriate signing and notarization setup.

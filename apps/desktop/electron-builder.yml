@@ -1,5 +1,6 @@
-appId: com.electron.app
-productName: '@keeply/desktop'
+appId: com.keeply.desktop
+productName: Keeply
+copyright: Copyright © 2026 Keeply
 protocols:
   - name: Keeply Authentication
     schemes:
@@ -16,9 +17,9 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: '@keeply/desktop'
+  executableName: Keeply
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: Keeply-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
@@ -37,11 +38,8 @@ linux:
     - AppImage
     - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: Keeply
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
