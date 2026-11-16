@@ -2,17 +2,17 @@
 
 Keeply is a personal link library for saving and organizing useful pages. Save a link with its title and details, then find it later with search, favorites, and archive tools. Keeply is available as a desktop app and as a web app, with Google sign-in.
 
-![Keeply app icon](apps/desktop/build/icon.png)
+![Keeply app preview](apps/desktop/build/screenshot.png)
 
 Open the hosted web app at [keeply-web-khaki.vercel.app](https://keeply-web-khaki.vercel.app/).
 
 ## Apps
 
-| App | Path | Description |
-| --- | --- | --- |
-| Web | `apps/web` | Browser app and browser-based sign-in flow for desktop. |
-| API | `apps/api` | Authentication and persistent link storage. |
-| Desktop | `apps/desktop` | Electron desktop client for Windows, macOS, and Linux. |
+| App     | Path           | Description                                             |
+| ------- | -------------- | ------------------------------------------------------- |
+| Web     | `apps/web`     | Browser app and browser-based sign-in flow for desktop. |
+| API     | `apps/api`     | Authentication and persistent link storage.             |
+| Desktop | `apps/desktop` | Electron desktop client for Windows, macOS, and Linux.  |
 
 ## Run locally
 
